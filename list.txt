@@ -1,0 +1,1 @@
+// Classic patch list. One line per patch: <index> <file.thor> - indexes must only ever go up.

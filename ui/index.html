@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Classic</title>
+<style>
+  /* NOTE: the patcher's embedded browser is old. No CSS variables, no "inset", keep it to plain rules. */
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; width: 900px; height: 600px; overflow: hidden;
+    background: #0d1626; color: #e8e4d6; font-family: 'Segoe UI', Tahoma, sans-serif;
+    user-select: none; position: relative;
+  }
+  button { font-family: inherit; cursor: pointer; border: none; }
+
+  #bg { position: absolute; top: 0; left: 0; width: 900px; height: 600px; z-index: 0;
+    background: linear-gradient(160deg, #1c3358 0%, #12213d 42%, #0a1120 100%); }
+  #bg2 { position: absolute; top: 0; left: 0; width: 900px; height: 600px; z-index: 0;
+    background: linear-gradient(0deg, rgba(0,0,0,0.0) 0%, rgba(217,194,138,0.07) 100%); }
+  #rule1 { position: absolute; left: 60px; top: 150px; width: 330px; height: 2px;
+    background: linear-gradient(90deg, #d9c28a, rgba(217,194,138,0)); z-index: 1; }
+  #rule2 { position: absolute; left: 60px; top: 306px; width: 330px; height: 2px;
+    background: linear-gradient(90deg, #d9c28a, rgba(217,194,138,0)); z-index: 1; }
+
+  #logo { position: absolute; left: 56px; top: 164px; z-index: 2; font-size: 76px; font-weight: 800;
+    letter-spacing: 12px; color: #f3e6bd; text-shadow: 0 3px 0 #7a6a3a, 0 8px 22px rgba(0,0,0,0.6); }
+  #tag { position: absolute; left: 60px; top: 262px; z-index: 2; font-size: 14px; letter-spacing: 4px; color: #b9ad8a; }
+
+  #info { position: absolute; left: 60px; top: 330px; width: 400px; z-index: 2; font-size: 14px; line-height: 24px; color: #cfc8b0; }
+  #info b { color: #f3e6bd; font-weight: 600; }
+
+  #news { position: absolute; right: 40px; top: 60px; width: 300px; height: 380px; z-index: 2; padding: 18px 20px;
+    background: rgba(8,14,26,0.62); border: 1px solid rgba(217,194,138,0.28); border-radius: 8px; overflow: hidden; }
+  #news h3 { margin: 0 0 12px 0; font-size: 12px; letter-spacing: 3px; color: #d9c28a; font-weight: 700; }
+  #news p { margin: 0 0 12px 0; font-size: 13px; line-height: 19px; color: #cfc8b0; }
+  #news p span { display: block; font-size: 11px; color: #8d8667; margin-bottom: 2px; }
+
+  #bottom-bar { position: absolute; left: 0; bottom: 0; width: 900px; height: 104px; z-index: 10;
+    background: linear-gradient(0deg, rgba(5,9,17,0.98), rgba(5,9,17,0.92)); border-top: 1px solid rgba(217,194,138,0.2); }
+  #status-label { position: absolute; left: 28px; top: 16px; width: 440px; font-size: 13px; font-weight: 600; color: #e8e4d6; }
+  #status-meta { position: absolute; left: 28px; top: 38px; width: 440px; font-size: 11px; color: #8d8667; }
+  #progress-track { position: absolute; left: 28px; top: 62px; width: 540px; height: 8px; border-radius: 4px; background: #1f2a3f; overflow: hidden; }
+  #progress-fill { height: 100%; border-radius: 4px; width: 0%; background: #d9c28a; }
+
+  .ghost-btn { position: absolute; top: 16px; width: 44px; height: 44px; border-radius: 6px; display: flex;
+    align-items: center; justify-content: center; background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(217,194,138,0.2); color: #9a937a; }
+  .ghost-btn:hover { background: rgba(217,194,138,0.1); color: #d9c28a; border-color: rgba(217,194,138,0.4); }
+
+  #btn-play { position: absolute; right: 28px; top: 10px; width: 172px; height: 56px; font-size: 17px;
+    display: flex; align-items: center; justify-content: center; border-radius: 6px; font-weight: 700; letter-spacing: 1px;
+    background: linear-gradient(135deg, #f1e2ae 0%, #d9c28a 45%, #a38c4f 100%); color: #1a1608; }
+  #btn-play:hover { opacity: 0.93; }
+  #btn-play:disabled { cursor: default; opacity: 0.45; }
+</style>
+</head>
+<body>
+  <div id="bg"></div>
+  <div id="bg2"></div>
+  <div id="rule1"></div>
+  <div id="logo">CLASSIC</div>
+  <div id="tag">PRIVATE PRE-RENEWAL REALM</div>
+  <div id="rule2"></div>
+
+  <div id="info">
+    <b>Pre-renewal</b> &middot; max level <b>99 / 70</b><br>
+    <b>5x</b> base and job EXP &middot; <b>3x</b> drops<br>
+    This is a test realm: things will break and get reset.
+  </div>
+
+  <div id="news">
+    <h3>NEWS</h3>
+    <p><span>Welcome</span>The patcher downloads updates before every launch. Leave it open until it says &ldquo;Ready to play&rdquo;.</p>
+    <p><span>Reports</span>Found a bug? Tell the host what you were doing when it happened.</p>
+  </div>
+
+  <div id="bottom-bar">
+    <div id="status-label">Checking for updates&hellip;</div>
+    <div id="status-meta"></div>
+    <div id="progress-track"><div id="progress-fill"></div></div>
+
+    <button class="ghost-btn" style="right: 220px;" title="Setup" onclick="openSetup()">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><line x1="4" y1="7" x2="20" y2="7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="9" cy="7" r="2.4" fill="#0a1120" stroke="currentColor" stroke-width="1.6"/><line x1="4" y1="17" x2="20" y2="17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="15" cy="17" r="2.4" fill="#0a1120" stroke="currentColor" stroke-width="1.6"/></svg>
+    </button>
+    <button id="btn-play" disabled onclick="playGame()">PLAY</button>
+  </div>
+
+<script>
+// ---- rpatchur native bridge ----
+// JS -> native: external.invoke("play" | "setup" | "exit" | "start_update" | "cancel_update" | "reset_cache" | "manual_patch")
+// native -> JS: rpatchur calls the patchingStatus* globals below as the patch progresses.
+function playGame() { external.invoke("play"); }
+function openSetup() { external.invoke("setup"); }
+
+function setStatus(text, meta) {
+  document.getElementById("status-label").textContent = text;
+  if (meta !== undefined) document.getElementById("status-meta").textContent = meta;
+}
+function setProgress(pct, color) {
+  var fill = document.getElementById("progress-fill");
+  fill.style.width = pct + "%";
+  if (color) fill.style.background = color;
+}
+
+function patchingStatusReady() {
+  setStatus("Ready to play", "Client up to date");
+  setProgress(100, "#d9c28a");
+  document.getElementById("btn-play").disabled = false;
+}
+function patchingStatusError(msg) {
+  setStatus("Update failed", msg);
+  setProgress(100, "#d65a5a");
+  document.getElementById("btn-play").disabled = false;
+}
+function patchingStatusDownloading(nbDownloaded, nbTotal, bytesPerSec) {
+  var pct = nbTotal > 0 ? Math.round((nbDownloaded / nbTotal) * 100) : 0;
+  var speed = (bytesPerSec / 1024 / 1024).toFixed(1) + " MB/s";
+  setStatus("Downloading patch " + nbDownloaded + " of " + nbTotal + "…", speed);
+  setProgress(pct, "#d65a5a");
+  document.getElementById("btn-play").disabled = true;
+}
+function patchingStatusInstalling(nbInstalled, nbTotal) {
+  var pct = nbTotal > 0 ? Math.round((nbInstalled / nbTotal) * 100) : 0;
+  setStatus("Installing patch " + nbInstalled + " of " + nbTotal + "…");
+  setProgress(pct, "#d65a5a");
+  document.getElementById("btn-play").disabled = true;
+}
+function patchingStatusPatchApplied(name) { setStatus("Applied " + name); }
+function notificationInProgress() { setStatus("An update is already in progress…"); }
+
+window.addEventListener("DOMContentLoaded", function () {
+  external.invoke("start_update");   // start the update check as soon as the page loads
+});
+</script>
+</body>
+</html>
